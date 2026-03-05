@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { SiteHeader } from '@/components/ui/site-header';
 import { ProductCard } from '@/components/storefront/product-card';
 import { getActiveCategories, getActiveProducts, getActiveProductsByCategorySlug } from '@/lib/data';
+import type { Category, ProductWithRelations } from '@/types/domain';
 
 export default async function CategoriesPage({
   searchParams
@@ -11,8 +12,8 @@ export default async function CategoriesPage({
   const params = await searchParams;
   const categoryParam = params.category;
   const selectedCategory = Array.isArray(categoryParam) ? categoryParam[0] : categoryParam;
-  let categories = [];
-  let products = [];
+  let categories: Category[] = [];
+  let products: ProductWithRelations[] = [];
 
   try {
     categories = await getActiveCategories();
@@ -33,7 +34,7 @@ export default async function CategoriesPage({
           <Link href="/categories" className={`btn-secondary text-sm ${!selectedCategory ? 'bg-brand-base text-white' : ''}`}>
             All
           </Link>
-          {categories.map((category: { id: string; slug: string; name: string }) => (
+          {categories.map((category) => (
             <Link
               key={category.id}
               href={`/categories?category=${category.slug}`}

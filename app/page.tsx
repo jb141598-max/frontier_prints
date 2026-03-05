@@ -2,9 +2,10 @@ import Link from 'next/link';
 import { SiteHeader } from '@/components/ui/site-header';
 import { ProductCard } from '@/components/storefront/product-card';
 import { getActiveProducts } from '@/lib/data';
+import type { ProductWithRelations } from '@/types/domain';
 
 export default async function HomePage() {
-  let products = [];
+  let products: ProductWithRelations[] = [];
   try {
     products = await getActiveProducts();
   } catch {
