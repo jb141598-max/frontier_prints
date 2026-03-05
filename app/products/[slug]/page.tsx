@@ -3,8 +3,8 @@ import { SiteHeader } from '@/components/ui/site-header';
 import { RequestForm } from '@/components/storefront/request-form';
 import { getActiveProductBySlug } from '@/lib/data';
 
-export default async function ProductDetailPage({ params }: { params: { slug: string } }) {
-  const { slug } = params;
+export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   const product = await getActiveProductBySlug(slug);
 
   if (!product) {

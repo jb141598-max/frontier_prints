@@ -6,9 +6,10 @@ import { getActiveCategories, getActiveProducts, getActiveProductsByCategorySlug
 export default async function CategoriesPage({
   searchParams
 }: {
-  searchParams: { category?: string };
+  searchParams: Promise<{ category?: string }>;
 }) {
-  const selectedCategory = searchParams.category;
+  const params = await searchParams;
+  const selectedCategory = params.category;
   let categories = [];
   let products = [];
 

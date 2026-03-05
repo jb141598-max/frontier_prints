@@ -4,9 +4,9 @@ import { SiteHeader } from '@/components/ui/site-header';
 export default async function ConfirmationPage({
   searchParams
 }: {
-  searchParams: { requestId?: string };
+  searchParams: Promise<{ requestId?: string }>;
 }) {
-  const params = searchParams;
+  const params = await searchParams;
 
   return (
     <div className="space-y-8">
