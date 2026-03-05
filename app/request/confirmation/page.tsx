@@ -4,9 +4,11 @@ import { SiteHeader } from '@/components/ui/site-header';
 export default async function ConfirmationPage({
   searchParams
 }: {
-  searchParams: Promise<{ requestId?: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const params = await searchParams;
+  const requestIdValue = params.requestId;
+  const requestId = Array.isArray(requestIdValue) ? requestIdValue[0] : requestIdValue;
 
   return (
     <div className="space-y-8">
@@ -19,9 +21,9 @@ export default async function ConfirmationPage({
         <p className="text-sm text-slate-600">
           We received your submission and will follow up by email. No payment is required at this step.
         </p>
-        {params.requestId && (
+        {requestId && (
           <p className="text-xs text-slate-500">
-            Reference ID: <span className="font-mono">{params.requestId}</span>
+            Reference ID: <span className="font-mono">{requestId}</span>
           </p>
         )}
         <div className="pt-2">

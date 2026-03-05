@@ -3,8 +3,17 @@ import { SiteHeader } from '@/components/ui/site-header';
 import { RequestForm } from '@/components/storefront/request-form';
 import { getActiveProductBySlug } from '@/lib/data';
 
-export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
+export default async function ProductDetailPage({
+  params
+}: {
+  params: Promise<Record<string, string | string[] | undefined>>;
+}) {
+  const resolvedParams = await params;
+  const slugValue = resolvedParams.slug;
+  const slug = Array.isArray(slugValue) ? slugValue[0] : slugValue;
+  if (!slug) {
+    notFound();
+  }
   const product = await getActiveProductBySlug(slug);
 
   if (!product) {

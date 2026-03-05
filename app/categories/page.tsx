@@ -6,10 +6,11 @@ import { getActiveCategories, getActiveProducts, getActiveProductsByCategorySlug
 export default async function CategoriesPage({
   searchParams
 }: {
-  searchParams: Promise<{ category?: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const params = await searchParams;
-  const selectedCategory = params.category;
+  const categoryParam = params.category;
+  const selectedCategory = Array.isArray(categoryParam) ? categoryParam[0] : categoryParam;
   let categories = [];
   let products = [];
 
