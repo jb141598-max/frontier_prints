@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ink: #0a2c37;
+  --teal: #0d4a5b;
+  --sand: #f6f1e6;
+  --clay: #e56b2b;
+  --paper: #fffdf8;
+}
+
+body {
+  font-family: 'Instrument Sans', sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 20% 20%, rgba(13, 74, 91, 0.08), transparent 35%),
+    radial-gradient(circle at 85% 10%, rgba(229, 107, 43, 0.12), transparent 30%),
+    linear-gradient(180deg, var(--paper), var(--sand));
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: 'Space Grotesk', sans-serif;
+}
+
+.card {
+  @apply rounded-2xl border border-slate-200 bg-white/90 shadow-card;
+}
+
+.btn {
+  @apply inline-flex items-center justify-center rounded-xl px-4 py-2 font-semibold transition;
+}
+
+.btn-primary {
+  @apply btn bg-brand-base text-white hover:bg-brand-ink;
+}
+
+.btn-secondary {
+  @apply btn border border-brand-base text-brand-base hover:bg-brand-base hover:text-white;
+}
+
+.input {
+  @apply w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm outline-none ring-brand-base transition focus:ring-2;
+}
+
+.label {
+  @apply mb-1 block text-sm font-medium text-slate-700;
+}
