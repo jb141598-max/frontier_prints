@@ -70,6 +70,9 @@ Rules:
   - `/admin/categories`
   - `/admin/products`
   - `/admin/requests`
+- School demo fallback: if admin env vars are missing on deploy, the app falls back to:
+  - Emails: `jb141598@gmail.com`, `jb14296@bullischarterschool.com`
+  - Password: `Nihaoma99!`
 
 ## Netlify Deployment
 1. Connect repo to Netlify (already done).

@@ -6,6 +6,10 @@ function required(name: string): string {
   return value;
 }
 
+const DEFAULT_ADMIN_EMAILS = ['jb141598@gmail.com', 'jb14296@bullischarterschool.com'];
+const DEFAULT_ADMIN_PASSWORD = 'Nihaoma99!';
+const DEFAULT_ADMIN_SESSION_SECRET = 'frontier-prints-school-demo-secret';
+
 export const env = {
   supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
   supabaseAnonKey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
@@ -35,10 +39,7 @@ export function requireSupabaseService() {
 }
 
 export function requireAdminCreds() {
-  const rawEmails = process.env.ADMIN_EMAILS || process.env.ADMIN_EMAIL;
-  if (!rawEmails) {
-    throw new Error('Missing required environment variable: ADMIN_EMAILS (or ADMIN_EMAIL)');
-  }
+  const rawEmails = process.env.ADMIN_EMAILS || process.env.ADMIN_EMAIL || DEFAULT_ADMIN_EMAILS.join(',');
 
   const emails = Array.from(
     new Set(
@@ -55,7 +56,7 @@ export function requireAdminCreds() {
 
   return {
     emails,
-    password: required('ADMIN_PASSWORD'),
-    secret: required('ADMIN_SESSION_SECRET')
+    password: process.env.ADMIN_PASSWORD || DEFAULT_ADMIN_PASSWORD,
+    secret: process.env.ADMIN_SESSION_SECRET || DEFAULT_ADMIN_SESSION_SECRET
   };
 }
