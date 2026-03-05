@@ -11,13 +11,13 @@ export function AdminShell({ title, subtitle, children }: Props) {
     <div className="space-y-6">
       <header className="card flex flex-wrap items-center justify-between gap-4 p-5">
         <div>
-          <p className="text-xs uppercase tracking-wide text-brand-base">Owner Panel</p>
+          <p className="text-xs uppercase tracking-wide text-brand-base">Admin Panel</p>
           <h1 className="text-2xl font-bold text-brand-ink">{title}</h1>
           {subtitle && <p className="text-sm text-slate-600">{subtitle}</p>}
         </div>
         <nav className="flex flex-wrap gap-2 text-sm">
           <Link href="/admin" className="btn-secondary">
-            Dashboard
+            Back to Dashboard
           </Link>
           <Link href="/admin/categories" className="btn-secondary">
             Categories
