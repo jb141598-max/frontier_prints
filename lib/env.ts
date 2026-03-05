@@ -13,6 +13,7 @@ export const env = {
   resendApiKey: process.env.RESEND_API_KEY,
   resendFromEmail: process.env.RESEND_FROM_EMAIL,
   ownerNotificationEmail: process.env.OWNER_NOTIFICATION_EMAIL,
+  adminEmails: process.env.ADMIN_EMAILS || process.env.ADMIN_EMAIL,
   adminEmail: process.env.ADMIN_EMAIL,
   adminPassword: process.env.ADMIN_PASSWORD,
   adminSessionSecret: process.env.ADMIN_SESSION_SECRET,
@@ -34,8 +35,26 @@ export function requireSupabaseService() {
 }
 
 export function requireAdminCreds() {
+  const rawEmails = process.env.ADMIN_EMAILS || process.env.ADMIN_EMAIL;
+  if (!rawEmails) {
+    throw new Error('Missing required environment variable: ADMIN_EMAILS (or ADMIN_EMAIL)');
+  }
+
+  const emails = Array.from(
+    new Set(
+      rawEmails
+        .split(',')
+        .map((email) => email.trim().toLowerCase())
+        .filter(Boolean)
+    )
+  );
+
+  if (emails.length === 0) {
+    throw new Error('ADMIN_EMAILS is empty.');
+  }
+
   return {
-    email: required('ADMIN_EMAIL'),
+    emails,
     password: required('ADMIN_PASSWORD'),
     secret: required('ADMIN_SESSION_SECRET')
   };

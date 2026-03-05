@@ -23,7 +23,7 @@ cp .env.example .env.local
 - `NEXT_PUBLIC_SUPABASE_URL`
 - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
 - `SUPABASE_SERVICE_ROLE_KEY`
-- `ADMIN_EMAIL`
+- `ADMIN_EMAILS` (comma-separated, e.g. `owner1@example.com,owner2@example.com`)
 - `ADMIN_PASSWORD`
 - `ADMIN_SESSION_SECRET`
 - `RESEND_API_KEY` (optional for local if you skip email)
@@ -65,7 +65,7 @@ Rules:
 
 ## Admin Panel
 - Login: `/admin/login`
-- Uses `ADMIN_EMAIL` + `ADMIN_PASSWORD`
+- Uses `ADMIN_EMAILS` + `ADMIN_PASSWORD`
 - Session cookie protected routes:
   - `/admin/categories`
   - `/admin/products`

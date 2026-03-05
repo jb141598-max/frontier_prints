@@ -9,13 +9,50 @@ const ONE_WEEK_SECONDS = 60 * 60 * 24 * 7;
 function createSignature(email: string, password: string, secret: string): string {
   return crypto
     .createHmac('sha256', secret)
-    .update(`${email}:${password}`)
+    .update(`${email.toLowerCase()}:${password}`)
     .digest('hex');
 }
 
-export async function setAdminSession() {
-  const { email, password, secret } = requireAdminCreds();
-  const token = createSignature(email, password, secret);
+function encodeEmail(email: string): string {
+  return Buffer.from(email, 'utf8').toString('base64url');
+}
+
+function decodeEmail(value: string): string | null {
+  try {
+    return Buffer.from(value, 'base64url').toString('utf8').toLowerCase();
+  } catch {
+    return null;
+  }
+}
+
+export function verifyAdminSessionToken(token: string, emails: string[], password: string, secret: string): boolean {
+  const [encodedEmail, signature] = token.split('.');
+  if (!encodedEmail || !signature || token.split('.').length !== 2) {
+    return false;
+  }
+
+  const email = decodeEmail(encodedEmail);
+  if (!email || !emails.includes(email)) {
+    return false;
+  }
+
+  const expectedSignature = createSignature(email, password, secret);
+  if (signature.length !== expectedSignature.length) {
+    return false;
+  }
+
+  return crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature));
+}
+
+export async function setAdminSession(email: string) {
+  const { emails, password, secret } = requireAdminCreds();
+  const normalizedEmail = email.trim().toLowerCase();
+  if (!emails.includes(normalizedEmail)) {
+    throw new Error('Unauthorized admin email.');
+  }
+
+  const signature = createSignature(normalizedEmail, password, secret);
+  const token = `${encodeEmail(normalizedEmail)}.${signature}`;
   const cookieStore = await cookies();
 
   cookieStore.set(ADMIN_COOKIE, token, {
@@ -33,18 +70,18 @@ export async function clearAdminSession() {
 }
 
 export async function isAdminAuthenticated(): Promise<boolean> {
-  const { email, password, secret } = requireAdminCreds();
-  const cookieStore = await cookies();
-  const cookieToken = cookieStore.get(ADMIN_COOKIE)?.value;
-  if (!cookieToken) {
-    return false;
-  }
+  try {
+    const { emails, password, secret } = requireAdminCreds();
+    const cookieStore = await cookies();
+    const cookieToken = cookieStore.get(ADMIN_COOKIE)?.value;
+    if (!cookieToken) {
+      return false;
+    }
 
-  const expectedToken = createSignature(email, password, secret);
-  if (cookieToken.length !== expectedToken.length) {
+    return verifyAdminSessionToken(cookieToken, emails, password, secret);
+  } catch {
     return false;
   }
-  return crypto.timingSafeEqual(Buffer.from(cookieToken), Buffer.from(expectedToken));
 }
 
 export async function requireAdminAuth() {
