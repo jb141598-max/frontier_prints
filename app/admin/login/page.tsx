@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { BackButton } from '@/components/ui/back-button';
 
 const errorCopy: Record<string, string> = {
   invalid: 'Invalid username/email or password.',
@@ -20,9 +21,7 @@ export default async function AdminLoginPage({
   return (
     <section className="mx-auto mt-10 max-w-2xl space-y-5">
       <div className="flex items-center justify-between">
-        <Link href="/" className="btn-secondary text-sm">
-          Back to Home
-        </Link>
+        <BackButton label="Back" fallbackHref="/" className="btn-secondary text-sm" />
         <Link href="/" className="text-sm font-semibold text-brand-base">
           Frontier Prints
         </Link>

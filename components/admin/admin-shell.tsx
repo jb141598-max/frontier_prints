@@ -1,12 +1,14 @@
 import Link from 'next/link';
+import { BackButton } from '@/components/ui/back-button';
 
 interface Props {
   title: string;
   subtitle?: string;
   children: React.ReactNode;
+  showDashboardBack?: boolean;
 }
 
-export function AdminShell({ title, subtitle, children }: Props) {
+export function AdminShell({ title, subtitle, children, showDashboardBack = true }: Props) {
   return (
     <div className="space-y-6">
       <header className="card flex flex-wrap items-center justify-between gap-4 p-5">
@@ -16,9 +18,7 @@ export function AdminShell({ title, subtitle, children }: Props) {
           {subtitle && <p className="text-sm text-slate-600">{subtitle}</p>}
         </div>
         <nav className="flex flex-wrap gap-2 text-sm">
-          <Link href="/admin" className="btn-secondary">
-            Back to Dashboard
-          </Link>
+          {showDashboardBack && <BackButton label="Back to Dashboard" fallbackHref="/admin" className="btn-secondary" />}
           <Link href="/admin/categories" className="btn-secondary">
             Categories
           </Link>

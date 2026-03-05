@@ -1,13 +1,11 @@
 import { AdminShell } from '@/components/admin/admin-shell';
-import Link from 'next/link';
+import { BackButton } from '@/components/ui/back-button';
 
 export default function AdminDashboardPage() {
   return (
-    <AdminShell title="Dashboard" subtitle="Quick links for managing the storefront.">
+    <AdminShell title="Dashboard" subtitle="Quick links for managing the storefront." showDashboardBack={false}>
       <div>
-        <Link href="/" className="btn-secondary text-sm">
-          Back to Home
-        </Link>
+        <BackButton label="Back to Home" fallbackHref="/" className="btn-secondary text-sm" />
       </div>
       <section className="grid gap-4 md:grid-cols-3">
         <article className="card p-5">
